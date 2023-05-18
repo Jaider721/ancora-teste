@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Sistema Âncora Condomínios">
+<meta name="author" content="JDelfes">
+<title>Âncora Condomínios</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+<link rel="stylesheet" th:href="@{/css/signin.css}"/>
+</head>
+  <body class="text-center">
+	<form th:action="@{/login}" method="post" class="form-signin">
+	<img class="mb-4" src="../imagens/logo_white.png" alt="">
+	<h4 class="text-primary" >Faça login</h4>
+				<label>Login</label> <input type="text" name="username" class="form-control">
+				<label>Senha</label> <input type="password" name="password" class="form-control">
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Lembrar de mim
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+      <p class="mt-5 mb-3 text-muted">&copy; Âncora Condomínios 2023</p>
+    </form>
+  </body>
+</html>

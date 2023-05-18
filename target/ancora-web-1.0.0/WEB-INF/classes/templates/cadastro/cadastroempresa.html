@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Âncora Condomínios</title>
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="sb-nav-fixed">
+	<div th:replace="head :: head"></div>
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-light"
+				id="sidenavAccordion">
+				<div th:replace="menu :: menu"></div>
+			</nav>
+		</div>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid">
+						<ol class="breadcrumb mb-4">
+							<li class="breadcrumb-item"><a href="#">ÂNCORA</a></li>
+							<li class="breadcrumb-item active">CADASTRO DE CONDOMÍNIO</li>
+						</ol>
+							<div class="card mb-4">
+								<div class="card-header">
+									<i class="fas fa-address-card"></i> CADASTRO DE CONDOMÍNIO
+								</div>
+								<div class="card-body">
+									<form action="salvaempresa" method="post" enctype="multipart/form-data" th:object="${empresaobj}" class="form-signin" name="form1" sec:authorize="hasAnyRole('ADMIN','GER','OBRA')">
+										<div class="row">
+											<div class="col-md-4">
+												<label>CNPJ:*</label>
+												<input type="hidden" name="id" th:field="*{id}">
+												<input type="hidden" name="nsu" th:field="*{nsu}">
+												<input type="text" class="form-control" name="cnpj" th:field="*{cnpj}" onkeypress="$(this).mask('00.000.000/0000-00')" required size="18" maxlength="18">
+											</div>
+											
+											<div class="col-md-1">
+												<label>UF:*</label>
+												<select id="uf" name="uf" class="form-control mb-1" required>
+												    <option disabled selected>UF</option>
+												 	<option value="AC">AC</option>
+				                                    <option value="AL">AL</option>
+				                                    <option value="AM">AM</option>
+				                                    <option value="AP">AP</option>
+				                                    <option value="BA">BA</option>
+				                                    <option value="CE">CE</option>
+				                                    <option value="DF">DF</option>
+				                                    <option value="ES">ES</option>
+				                                    <option value="GO">GO</option>
+				                                    <option value="MA">MA</option>
+				                                    <option value="MG">MG</option>
+				                                    <option value="MS">MS</option>
+				                                    <option value="MT">MT</option>
+				                                    <option value="PA">PA</option>
+				                                    <option value="PB">PB</option>
+				                                    <option value="PE">PE</option>
+				                                    <option value="PI">PI</option>
+				                                    <option value="PR">PR</option>
+				                                    <option value="RJ">RJ</option>
+				                                    <option value="RN">RN</option>
+				                                    <option value="RS">RS</option>
+				                                    <option value="RO">RO</option>
+				                                    <option value="RR">RR</option>
+				                                    <option value="SC">SC</option>
+				                                    <option value="SE">SE</option>
+				                                    <option value="SP">SP</option>
+				                                    <option value="TO">TO</option>
+			                                </select>
+											
+											</div>
+											
+											<div class="col-md-4">
+												<label>Razão Social:*</label>
+												<input type="text" class="form-control" name="razaoSocial" th:field="*{razaoSocial}" required size="100" maxlength="100">
+											</div>
+											<div class="col-md-2">
+												<label>ID Super Lógica</label><br/> 
+												<input type="number" class="form-control" name="idCondSuperLogica" th:field="*{idCondSuperLogica}" onkeypress="$(this).mask('000')" required size="3" maxlength="3">
+											</div>			
+											<div class="col-md-4">
+												<label>Caminho do Certificado</label>
+												<input class="form-control" type="file" name="file" required="required">
+												
+											</div>
+											<div class="col-md-4">
+												<label>Senha do Certificado</label> 
+												<input type="password" class="form-control" name="senhaCertificado" th:field="*{senhaCertificado}">
+											</div>																							
+											<input type="hidden" name="ambiente" value="PRODUCAO">
+											
+											
+											
+										</div><br/>	
+										<button type="submit" class="btn btn-primary">Cadastrar</button>
+									</form>
+									<br />
+									
+								</div>
+							</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fa fa-address-book mr-1"></i>
+										<span class="font-weight-bold text-monospace text-primary text-uppercase" th:text="${msg}"></span>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+										<tr class="table-primary">
+											<th class="text-center navbar-dark bg-primary">CNPJ</th>
+											<th class="text-center navbar-dark bg-primary">Razão Social</th>
+											<th class="text-center navbar-dark bg-primary">UF</th>
+											<th class="text-center navbar-dark bg-primary">Id SuperLógica</th>
+										</tr>
+									</thead>
+								<tbody>
+										<tr th:each="empresa : ${empresas}">
+											<td th:text=${empresa.cnpj}></td>
+											<td th:text=${empresa.razaoSocial}></td>
+											<td th:text=${empresa.uf}></td>
+											<td th:text=${empresa.idCondSuperLogica} class="text-center"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</main>
+			<div th:replace="footer :: footer"></div>
+		</div>
+	</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/menu.js}"></script>
+<script th:src="@{/js/Chart.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/dataTables.bootstrap4.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/js/datatables-demo.js}"></script>
+<script th:src="@{/js/ui.datepicker-pt-BR.js}"></script>
+<script th:src="@{/js/all.min.js}" crossorigin="anonymous"></script>
+<script th:src="@{/js/jquery.mask.min.js}" crossorigin="anonymous"></script>
+</body>
+</html>
