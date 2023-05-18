@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Âncora Condomínios</title>
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="sb-nav-fixed">
+	<div th:replace="head :: head"></div>
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-light"
+				id="sidenavAccordion">
+				<div th:replace="menu :: menu"></div>
+			</nav>
+		</div>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid">
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="#">ÂNCORA</a></li>
+						<li class="breadcrumb-item"><a href="#">NOTAS FISCAIS</a></li>
+						<li class="breadcrumb-item active">NOTA FISCAL DETALHADA</li>
+					</ol>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-table mr-1"></i>NOTAS FISCAL DETALHADA DO CONDOMÍNIO  - <span th:text="${condominio}" class="font-weight-bold"></span>´
+						</div>
+						<div class="card-body">
+							<label>CNPJ DO EMITENTE:&nbsp;</label><span th:text="${notafiscal.cnpjEmitente}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<label>EMITENTE:&nbsp;</label><span th:text="${notafiscal.nomeEmitente}"></span><br/>
+							<label>Nº DA NOTA:&nbsp;</label><span th:text="${notafiscal.numeroNota}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+							<label>CHAVE DE ACESSO:&nbsp;</label><span th:text="${notafiscal.chave}"></span><br/>
+							<label>Valor da Nota:&nbsp;</label><span th:text="| R$ ${#numbers.formatDecimal(notafiscal.valor, 1, 'DEFAULT', 2, 'DEFAULT')}" class="font-weight-light"></span><br/>
+							<label>Valor do Frete:&nbsp;</label><span th:text="| R$ ${#numbers.formatDecimal(notafiscal.vFrete, 1, 'DEFAULT', 2, 'DEFAULT')}" class="font-weight-light"></span><br/>
+							<label>Valor do Desconto:&nbsp;</label><span th:text="| R$ ${#numbers.formatDecimal(notafiscal.vDesc, 1, 'DEFAULT', 2, 'DEFAULT')}" class="font-weight-light"></span><br/>
+							<label>Data:&nbsp;</label><span th:text="${#dates.format(notafiscal.data, 'dd/MM/yyyy')}"></span><br/>
+							<label>Natureza da Operação:&nbsp;</label><span th:text="${notafiscal.naturezaOperacao}"></span><br/>
+							<label>Ver Nota:&nbsp;</label><a th:href="@{vernotacompleta/{idnota}(idnota=${notafiscal.id})}" target="_blank"><i class="material-icons" style="vertical-align: -6px;">visibility</i></a><br/>
+							<label>Enviado para o SuperLógica:&nbsp;</label><span th:if="${notafiscal.enviadoSuperLogica ==true}"> SIM <input type="image" src="/imagens/superlogica_red.png" width="15" height="15"/></span>
+							<span th:if="${notafiscal.enviadoSuperLogica == false}"> NÃO 
+							<form action="superlogica" method="post" th:object="${clienteobj}" class="form-signin" name="form1" >
+														<input type="hidden" id="idnota" name="idnota" th:value="${notafiscal.id}">
+							<label>Enviar para o SuperLógica:&nbsp;</label><input type="image" style="vertical-align: -6px;" src="/imagens/superlogica.png" alt="Submit Form" width="25" height="25"/>
+							</form></span><br/><br/>
+							<label>Lista de Produtos: </label>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+											<tr class="table-primary">
+												<th width=100 class="text-center navbar-dark bg-primary">NCM</th>
+												<th width=100 class="text-center navbar-dark bg-primary">Descrição</th>
+												<th width=100 class="text-center navbar-dark bg-primary">ID Despesa</th>
+												<th width=100 class="text-center navbar-dark bg-primary">Descrição da Despesa</th>
+												<th width=100 class="text-center navbar-dark bg-primary">Associar NCM a Despesa</th>
+											</tr>
+										</thead>
+									<tbody>
+											<tr th:each="notaNcm : ${notafiscal.notaNcm}">
+												<td th:text=${notaNcm.ncm} align="center"></td>
+												<td th:text=${notaNcm.descricao} align="center"></td>
+												<td th:text=${notaNcm.ncmNota.despesa.idDespesa} align="center"></td>
+												<td th:text=${notaNcm.ncmNota.despesa.descricao} align="center"></td>
+												<td sec:authorize="hasAnyRole('ADMIN')"class="text-center"><a th:href="@{associardespesapelanota/{idncm}/{idnota}(idncm=${notaNcm.ncmNota.id},idnota=${notaNcm.notaEntrada.id})}"><i class="material-icons">note_add</i></a></td>
+											</tr>	      												
+									</tbody>
+								</table>
+							</div>								
+							<label>Tipo de Despesa: </label>
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+											<tr class="table-primary">
+												<th width=100 class="text-center navbar-dark bg-primary">Id Despesa</th>
+												<th width=100 class="text-center navbar-dark bg-primary">Descrição</th>
+												<th width=100 class="text-center navbar-dark bg-primary">Valor Total Despesa</th>
+											</tr>
+										</thead>
+									<tbody>
+											<tr th:each="despesa : ${tipoDespesas}">
+												<td th:text=${despesa.ID_DESPESA_DES} align="center"></td>
+												<td th:text=${despesa.ST_COMPLEMENTO_APRO} align="center"></td>
+												<td align="center" th:text="| R$ ${#numbers.formatDecimal(despesa.VL_VALOR_PDES, 0,'POINT', 2, 'COMMA')}"></td>
+											</tr>
+									<tfoot align="center" class="text-danger">
+		  									<tr>
+		     									<td></td>
+			    								<td>VALOR TOTAL DA NOTA</td>
+			    								<td align="center" th:text="| R$ ${#numbers.formatDecimal(soma, 0,'POINT', 2, 'COMMA')}"></td>
+		  									</tr>
+									</tfoot>	      												
+									</tbody>
+								</table>
+							</div>							
+						</div>
+					</div>
+				</div>
+			</main>
+			<div th:replace="footer :: footer"></div>
+		</div>
+	</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/Chart.min.js}"></script>
+<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/js/datatables-demo.js}"></script>
+<script th:src="@{/js/ui.datepicker-pt-BR.js}"></script>
+<script th:src="@{/js/all.min.js}"></script>
+<script th:src="@{/js/jquery.mask.min.js}"></script>
+</body>
+</html>

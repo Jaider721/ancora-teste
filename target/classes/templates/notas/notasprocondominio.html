@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Âncora Condomínios</title>
+<link th:href="@{/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/css/dataTables.bootstrap4.min.css}" rel="stylesheet"/>
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="sb-nav-fixed">
+	<div th:replace="head :: head"></div>
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-light"
+				id="sidenavAccordion">
+				<div th:replace="menu :: menu"></div>
+			</nav>
+		</div>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid">
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a href="#">ÂNCORA</a></li>
+						<li class="breadcrumb-item"><a href="#">NOTAS FISCAIS</a></li>
+						<li class="breadcrumb-item active">PESQUISAR NOTAS FISCAIS</li>
+					</ol>
+							<div class="card mb-4">
+								<div class="card-header">
+									<i class="fas fa-search"></i> PESQUISAR NOTAS FISCAIS - POR CONDOMÍNIO</span>
+								</div>
+								<div class="card-body">
+									<div th:each="m : ${msg}">
+										<p class="text-danger">
+											<span th:text="${m}"></span>
+										</p>
+									</div>								
+								<div class="form-row align-items-center">
+									<form action="pesquisarcondominiocnpj" method="post" class="form-signin">
+								    	<div class="col-auto">
+										 	<label>CNPJ:*</label>
+											<input type="text" name="cnpj" class="form-control mb-2" onkeypress="$(this).mask('00.000.000/0000-00')" required size="20">
+										</div>
+										<div class="col-auto">
+											<button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+										</div>
+									</form>
+								</div>
+							</div>
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-table mr-1"></i>LISTA DE NOTAS FISCAIS  - <span th:text="${condominio}"></span>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered" id="dataTable">
+									<thead>
+											<tr class="table-primary">
+												<th class="text-center navbar-dark bg-primary" width=100>CNPJ</th>
+												<th class="text-center navbar-dark bg-primary">Emitentes - Empresa</th>
+												<th class="text-center navbar-dark bg-primary">Valor</th>
+												<th class="text-center navbar-dark bg-primary" width=150>Data de Emissão</th>
+												<th class="text-center navbar-dark bg-primary">Natureza da Operação</th>
+												<th class="text-center navbar-dark bg-primary">PDF</th>																								
+												<th class="text-center navbar-dark bg-primary">Detalhes</th>
+												<th class="text-center navbar-dark bg-primary">Superlógica</th>
+											</tr>
+										</thead>
+									<tbody>
+											<tr th:each="nota : ${notas}">
+												<td class="text-center" th:text=${nota.cnpjEmitente}></td>
+												<td th:text=${nota.nomeEmitente} align="left"></td>
+												<td th:text="| R$ ${#numbers.formatDecimal(nota.valor, 0,'POINT', 2, 'COMMA')}"></td>
+												<td th:text="${#temporals.format(nota.data.toLocalDateTime(), 'dd/MM/yyyy HH:mm:ss')}"></td>
+												<td th:text=${nota.naturezaOperacao} align="left"></td>
+ 												<td class="text-center"><a th:href="@{vernotacompleta/{idnota}(idnota=${nota.id})}" target="_blank"><i class="material-icons">visibility</i></a></td>
+ 												<td class="text-center"><a th:href="@{notafiscaldetalhada/{idnota}(idnota=${nota.id})}"><i class="material-icons">description</i></a></td>
+												<td class="text-center" th:if="${nota.enviadoSuperLogica == true}"><input type="image" src="imagens/superlogica_red.png" width="20" height="20"/></td>
+												<td class="text-center" th:if="${nota.enviadoSuperLogica == false}">
+													<form action="superlogica" method="post" th:object="${clienteobj}" class="form-signin" name="form1" >
+														<input type="hidden" id="idnota" name="idnota" th:value="${nota.id}">
+														<input type="image" src="imagens/superlogica.png" alt="Submit Form" width="20" height="20"/>
+													</form>
+												</td> 																																															
+												
+											</tr>	
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				</div>
+			</main>
+			<div th:replace="footer :: footer"></div>
+		</div>
+	</div>
+<script th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/Chart.min.js}"></script>
+<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/js/dataTables.bootstrap4.min.js}"></script>
+<script th:src="@{/js/datatables-demo.js}"></script>
+<script th:src="@{/js/ui.datepicker-pt-BR.js}"></script>
+<script th:src="@{/js/all.min.js}"></script>
+<script th:src="@{/js/jquery.mask.min.js}"></script>
+</body>
+</html>

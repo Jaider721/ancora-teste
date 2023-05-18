@@ -1,0 +1,74 @@
+<footer th:fragment="menu">
+	<div class="sb-sidenav-menu">
+		<div class="nav">
+			<div class="sb-sidenav-menu-heading"></div>
+			<a class="nav-link" th:href="@{/cadastroempresa}">
+				<div class="sb-nav-link-icon"> <i class="fas fa-bars"></i></div>
+				 MENU
+			</a>
+			<div class="sb-sidenav-menu-heading">ADMINISTRATIVO</div>
+			<a sec:authorize="hasAnyRole('ADMIN','GER','OBRA')" class="nav-link collapsed" 
+			href="#" data-toggle="collapse" data-target="#collapseCadastro" aria-expanded="false" aria-controls="collapseLayouts">
+				<div class="sb-nav-link-icon"><i class="fa fa-id-card fa-2x" style='color: #99cc33'></i></div> 
+				CADASTRO
+				<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+			</a>
+			<div class="collapse" id="collapseCadastro" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<nav class="sb-sidenav-menu-nested nav">
+					<a sec:authorize="hasAnyRole('ADMIN','GER','OBRA')" class="nav-link" th:href="@{/cadastroempresa}"><i class="fa fa-building" style="vertical-align: -6px;"></i>&nbsp;Condomínio</a>
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/cadusuario}"><i class="fas fa-users" style="vertical-align: -6px;"></i>&nbsp;Usu&aacute;rios</a>
+				</nav>
+			</div>
+			<a sec:authorize="hasAnyRole('ADMIN','GER','OBRA')" class="nav-link collapsed" 
+			href="#" data-toggle="collapse" data-target="#collapseCondominio" aria-expanded="false" aria-controls="collapseLayouts">
+				<div class="sb-nav-link-icon"><i class="fa fa-building fa-2x" style='color: #99cc33'></i></div> 
+				CONDOMÍNIO
+				<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+			</a>
+			<div class="collapse" id="collapseCondominio" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<nav class="sb-sidenav-menu-nested nav">
+					<a sec:authorize="hasAnyRole('ADMIN','GER','OBRA')" class="nav-link" th:href="@{/listaempresa}"><i class="fa fa-list-alt" style="vertical-align: -6px;"></i>&nbsp;Lista de Condomínio</a>
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/listafornecedores}"><i class="fa fa-address-book" style="vertical-align: -6px;"></i>&nbsp;Fornecedores</a>
+				</nav>
+			</div>			
+			<a  sec:authorize="hasAnyRole('ADMIN','GER','SEC','OBRA')" class="nav-link collapsed" 
+			    href="#" data-toggle="collapse" data-target="#collapseNotas" aria-expanded="false" aria-controls="collapseNotas">
+				<div class="sb-nav-link-icon"><i class="fa fa-clone fa-2x" style='color: #99cc33'></i></div>
+				NOTAS FISCAIS
+				<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+			</a>
+			<div class="collapse" id="collapseNotas" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<nav class="sb-sidenav-menu-nested nav">
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/listarnotas}"><i class="fa fa-list-ol" style="vertical-align: -6px;"></i>&nbsp;Por Número</a>
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/notasprocondominio}"><i class="fa fa-building" style="vertical-align: -6px;"></i>&nbsp;Por Condomínio</a>
+				</nav>
+			</div>
+			<a  sec:authorize="hasAnyRole('ADMIN','GER','SEC','OBRA')" class="nav-link collapsed" 
+			href="#" data-toggle="collapse" data-target="#collapseDespesa" aria-expanded="false" aria-controls="collapseDespesa">
+				<div class="sb-nav-link-icon"><i class="fas fa-columns fa-2x" style='color: #99cc33'></i></div>
+				DESPESAS/NCM
+				<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+			</a>
+			<div class="collapse" id="collapseDespesa" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<nav class="sb-sidenav-menu-nested nav">
+					<a sec:authorize="hasAnyRole('ADMIN','GER','SEC','OBRA')" class="nav-link" th:href="@{/cadastrodespesas}"><i class="fa fa-building" style="vertical-align: -6px;"></i>&nbsp;Cadatrar Despesas</a>
+					<a sec:authorize="hasAnyRole('ADMIN','GER','SEC','OBRA')" class="nav-link" th:href="@{/associarncmdespesas}"><i class="fa fa-table" style="vertical-align: -6px;"></i>&nbsp;NCMs Sem Despesa</a>
+				</nav>
+			</div>
+			
+			<a  sec:authorize="hasAnyRole('ADMIN','GER','SEC','OBRA')" class="nav-link collapsed" 
+			href="#" data-toggle="collapse" data-target="#collapseSuperLogica" aria-expanded="false" aria-controls="collapseSuperLogica">
+				<div class="sb-nav-link-icon"><i class="fa fa-cloud fa-2x" style='color: #99cc33'></i></div>
+				CONTROLE SUPERLÓGICA
+				<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+			</a>
+			<div class="collapse" id="collapseSuperLogica" aria-labelledby="headingOne" data-parent="#sidenavAccordion">
+				<nav class="sb-sidenav-menu-nested nav">
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/notasporcondominioenviadas}"><input type="image" src="/imagens/superlogica_red.png" width="15" height="15"/>&nbsp;NOTAS ENVIADAS</a>					
+					<a sec:authorize="hasAnyRole('ADMIN')" class="nav-link" th:href="@{/notasporcondominionaoenviadas}"><input type="image" src="/imagens/superlogica.png" width="15" height="15"/>&nbsp;NOTAS NÃO ENVIADAS</a>
+				</nav>
+			</div>			
+	
+		</div>
+	</div>
+</footer>
